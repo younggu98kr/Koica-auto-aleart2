@@ -8,7 +8,7 @@ import requests
 LIST_URL = "https://job.koica.go.kr/application/applicationListPage.do?menuId=MENU0098"
 
 # 찾고 싶은 키워드들 (원하면 더 추가 가능)
-KEYWORDS = ["자동차", "전기자동차", "EV", "모빌리티"]
+KEYWORDS = ["자동차", "전기자동차", "EV", "모빌리티", "자동차 정비"]
 
 def fetch_html(url: str) -> str:
     # 웹사이트가 “봇이네?” 하고 튕길 때를 줄이려고 사용자 브라우저처럼 보이게 함
