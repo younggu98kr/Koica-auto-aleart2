@@ -1,0 +1,53 @@
+name: KOICA Auto Alert
+
+on:
+  schedule:
+    # GitHub Actions schedule은 UTC 기준이고,
+    # 너무 촘촘하게(예: 5분) 하면 정확히 안 돌 때도 있습니다.
+    # 하루 4번(6시간마다) 정도면 “놓침” 거의 없음.
+    - cron: "0 */6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install requests
+
+      - name: Run monitor
+        id: mon
+        run: |
+          python monitor.py | tee out.txt
+          if grep -q "FOUND=1" out.txt; then
+            echo "found=1" >> $GITHUB_OUTPUT
+          else
+            echo "found=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit seen.json update
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add seen.json || true
+          git diff --cached --quiet || git commit -m "update seen"
+          git push
+
+      - name: Create Issue (email alert)
+        if: steps.mon.outputs.found == '1'
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "KOICA 자동차/모빌리티 관련 공고 발견"
+          content-filepath: issue_body.md
