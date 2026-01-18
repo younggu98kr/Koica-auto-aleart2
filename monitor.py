@@ -5,10 +5,10 @@ from urllib.parse import urljoin
 
 import requests
 
-LIST_URL = "https://job.koica.go.kr/application/applicationListPage.do?menuId=MENU0098"
+LIST_URL = "http://bike.passo.co.kr/bike/index.php?part=cybershop&path=cybershop&mode=home"
 
 # 찾고 싶은 키워드들 (원하면 더 추가 가능)
-KEYWORDS = ["자동차", "전기자동차", "모집", "전문가", "자동차 정비"]
+KEYWORDS = ["PCX", "혼다", "가와사키", "골드윙", "할리"]
 
 def fetch_html(url: str) -> str:
     # 웹사이트가 “봇이네?” 하고 튕길 때를 줄이려고 사용자 브라우저처럼 보이게 함
