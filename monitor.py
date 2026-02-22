@@ -16,7 +16,11 @@ def fetch_html(url: str) -> str:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                       "(KHTML, like Gecko) Chrome/120.0 Safari/537.36"
     }
-    r = requests.get(url, headers=headers, timeout=30)
+    import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+r = requests.get(url, headers=headers, timeout=30, verify=False)
+
     r.raise_for_status()
     return r.text
 
