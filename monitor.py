@@ -11,16 +11,11 @@ LIST_URL = "https://job.koica.go.kr/application/applicationListPage.do?menuId=ME
 KEYWORDS = ["모집", "자동차", "전문가", "스리랑카", "직업훈련원"]
 
 def fetch_html(url: str) -> str:
-    # 웹사이트가 “봇이네?” 하고 튕길 때를 줄이려고 사용자 브라우저처럼 보이게 함
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                       "(KHTML, like Gecko) Chrome/120.0 Safari/537.36"
     }
-    import urllib3
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-r = requests.get(url, headers=headers, timeout=30, verify=False)
-
+    r = requests.get(url, headers=headers, timeout=30, verify=False)
     r.raise_for_status()
     return r.text
 
